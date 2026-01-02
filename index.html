@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kids Learning App - Menu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="menu-container">
+        <h1 class="menu-title">🌟 Learning Fun! 🌟</h1>
+        <p class="menu-subtitle">Choose an exercise to start learning</p>
+        
+        <div class="exercise-grid">
+            <div class="exercise-card" onclick="navigateToExercise('missing')">
+                <div class="exercise-icon">🔢</div>
+                <div class="exercise-name">Missing Number</div>
+            </div>
+            
+            <div class="exercise-card" onclick="navigateToExercise('before')">
+                <div class="exercise-icon">⬅️</div>
+                <div class="exercise-name">Before</div>
+            </div>
+            
+            <div class="exercise-card" onclick="navigateToExercise('after')">
+                <div class="exercise-icon">➡️</div>
+                <div class="exercise-name">After</div>
+            </div>
+            
+            <div class="exercise-card" onclick="navigateToExercise('greater')">
+                <div class="exercise-icon">⬆️</div>
+                <div class="exercise-name">Greater</div>
+            </div>
+            
+            <div class="exercise-card" onclick="navigateToExercise('smaller')">
+                <div class="exercise-icon">⬇️</div>
+                <div class="exercise-name">Smaller</div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="config.js"></script>
+    <script src="router.js"></script>
+</body>
+</html>
+

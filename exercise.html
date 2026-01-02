@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kids Learning App - Exercise</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="exercise-container">
+        <div class="exercise-header">
+            <button class="back-button" onclick="navigateToMenu()">← Back to Menu</button>
+            <h2 class="exercise-title" id="exerciseTitle">Exercise</h2>
+        </div>
+        
+        <div class="question-display">
+            <div class="question-text" id="questionText">Loading question...</div>
+        </div>
+        
+        <div class="options-container" id="optionsContainer">
+            <!-- Options will be generated here -->
+        </div>
+        
+        <div class="feedback-message" id="feedbackMessage"></div>
+    </div>
+    
+    <script src="config.js"></script>
+    <script src="router.js"></script>
+    <script src="logic.js"></script>
+    <script>
+        // Sound utility functions using Web Audio API
+        let audioContext = null;
+        
+        /**
+         * Get or create audio context (initialized on first user interaction)
+         */
+        function getAudioContext() {
+            if (!audioContext) {
+                try {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                } catch (e) {
+                    return null;
+                }
+            }
+            // Resume context if suspended (required by some browsers)
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            return audioContext;
+        }
+        
+        /**
+         * Play a sound with specified frequency and duration
+         * @param {number} frequency - Frequency in Hz
+         * @param {number} duration - Duration in milliseconds
+         * @param {string} type - Wave type ('sine', 'square', 'triangle', 'sawtooth')
+         */
+        function playSound(frequency, duration, type = 'sine') {
+            const ctx = getAudioContext();
+            if (!ctx) return;
+            
+            try {
+                const oscillator = ctx.createOscillator();
+                const gainNode = ctx.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(ctx.destination);
+                
+                oscillator.frequency.value = frequency;
+                oscillator.type = type;
+                
+                // Smooth volume envelope (fade in/out) - kid-friendly volume
+                gainNode.gain.setValueAtTime(0, ctx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.25, ctx.currentTime + 0.01);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration / 1000);
+                
+                oscillator.start(ctx.currentTime);
+                oscillator.stop(ctx.currentTime + duration / 1000);
+            } catch (e) {
+                // Silently fail if audio is not available
+            }
+        }
+        
+        /**
+         * Play success sound (pleasant ascending chime)
+         */
+        function playSuccessSound() {
+            // Play a pleasant ascending chord
+            playSound(523.25, 100, 'sine'); // C5
+            setTimeout(() => playSound(659.25, 100, 'sine'), 50); // E5
+            setTimeout(() => playSound(783.99, 150, 'sine'), 100); // G5
+        }
+        
+        /**
+         * Play failure sound (gentle lower tone)
+         */
+        function playFailureSound() {
+            // Play a gentle lower tone (not harsh)
+            playSound(392.00, 200, 'sine'); // G4
+        }
+        
+        // Exercise page logic
+        let currentQuestion = null;
+        let isAnswered = false;
+        
+        // Exercise type names for display
+        const exerciseTypeNames = {
+            'missing': 'Missing Number',
+            'before': 'Before',
+            'after': 'After',
+            'greater': 'Greater',
+            'smaller': 'Smaller'
+        };
+        
+        /**
+         * Initialize the exercise page
+         */
+        function initExercise() {
+            const exerciseType = getCurrentExerciseType();
+            
+            if (!exerciseType) {
+                // If no type specified, redirect to menu
+                navigateToMenu();
+                return;
+            }
+            
+            // Set exercise title
+            const titleElement = document.getElementById('exerciseTitle');
+            titleElement.textContent = exerciseTypeNames[exerciseType] || 'Exercise';
+            
+            // Generate and display first question
+            generateNewQuestion();
+        }
+        
+        /**
+         * Generate and display a new question
+         */
+        function generateNewQuestion() {
+            const exerciseType = getCurrentExerciseType();
+            currentQuestion = generateQuestion(exerciseType);
+            
+            // Display question
+            document.getElementById('questionText').textContent = currentQuestion.question;
+            
+            // Clear feedback
+            document.getElementById('feedbackMessage').textContent = '';
+            document.getElementById('feedbackMessage').className = 'feedback-message';
+            
+            // Generate option buttons
+            renderOptions();
+            
+            // Reset state
+            isAnswered = false;
+        }
+        
+        /**
+         * Render answer options as buttons
+         */
+        function renderOptions() {
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+            
+            currentQuestion.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-button';
+                button.textContent = option;
+                button.onclick = () => handleAnswer(option);
+                container.appendChild(button);
+            });
+        }
+        
+        /**
+         * Handle answer selection
+         * @param {number|string} selectedAnswer - The answer selected by the user (number or sign)
+         */
+        function handleAnswer(selectedAnswer) {
+            if (isAnswered) return;
+            
+            isAnswered = true;
+            const buttons = document.querySelectorAll('.option-button');
+            const feedbackElement = document.getElementById('feedbackMessage');
+            
+            // Disable all buttons
+            buttons.forEach(btn => {
+                btn.classList.add('disabled');
+            });
+            
+            // Check if answer is correct (handle both numbers and signs)
+            const isCorrect = String(selectedAnswer) === String(currentQuestion.correctAnswer);
+            
+            if (isCorrect) {
+                // Play success sound
+                playSuccessSound();
+                
+                // Mark correct button
+                buttons.forEach(btn => {
+                    const btnValue = String(btn.textContent.trim());
+                    const correctValue = String(currentQuestion.correctAnswer);
+                    if (btnValue === correctValue) {
+                        btn.classList.add('correct');
+                    }
+                });
+                
+                // Show success feedback
+                feedbackElement.textContent = '⭐ Good job!';
+                feedbackElement.classList.add('feedback-correct');
+                
+                // Auto-generate next question after 1.5 seconds
+                setTimeout(() => {
+                    generateNewQuestion();
+                }, 1500);
+            } else {
+                // Play failure sound
+                playFailureSound();
+                // Mark wrong button
+                buttons.forEach(btn => {
+                    const btnValue = String(btn.textContent.trim());
+                    const selectedValue = String(selectedAnswer);
+                    const correctValue = String(currentQuestion.correctAnswer);
+                    
+                    // Mark selected wrong answer
+                    if (btnValue === selectedValue) {
+                        btn.classList.add('wrong');
+                    }
+                    // Also mark correct answer
+                    if (btnValue === correctValue) {
+                        btn.classList.add('correct');
+                    }
+                });
+                
+                // Show try again feedback
+                feedbackElement.textContent = 'Try again 😊';
+                feedbackElement.classList.add('feedback-wrong');
+                
+                // Re-enable buttons after 2 seconds to allow retry
+                setTimeout(() => {
+                    isAnswered = false;
+                    buttons.forEach(btn => {
+                        btn.classList.remove('disabled', 'correct', 'wrong');
+                    });
+                    feedbackElement.textContent = '';
+                    feedbackElement.classList.remove('feedback-correct', 'feedback-wrong');
+                }, 2000);
+            }
+        }
+        
+        // Initialize when page loads
+        window.addEventListener('DOMContentLoaded', initExercise);
+    </script>
+</body>
+</html>
+
