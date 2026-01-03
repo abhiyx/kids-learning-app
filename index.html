@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kids Learning App - Menu</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <div class="menu-container">
@@ -37,10 +38,121 @@
                 <div class="exercise-name">Smaller</div>
             </div>
         </div>
+        
+        <div class="download-worksheet-card" onclick="openWorksheetModal()">
+            <div class="exercise-icon">📄</div>
+            <div class="exercise-name">Download Worksheet</div>
+        </div>
+    </div>
+    
+    <!-- Worksheet Modal -->
+    <div id="worksheetModal" class="modal-overlay">
+        <div class="modal-container">
+            <h2 class="modal-title">Create Your Worksheet</h2>
+            <form id="worksheetForm">
+                <div class="exercise-types-section">
+                    <label class="section-label">Select Exercise Types:</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="exerciseType" value="missing" class="exercise-checkbox">
+                            <span>🔢 Missing Number</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="exerciseType" value="before" class="exercise-checkbox">
+                            <span>⬅️ Before</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="exerciseType" value="after" class="exercise-checkbox">
+                            <span>➡️ After</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="exerciseType" value="greater" class="exercise-checkbox">
+                            <span>⬆️ Greater</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="exerciseType" value="smaller" class="exercise-checkbox">
+                            <span>⬇️ Smaller</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question-count-section">
+                    <label for="questionCount" class="section-label">Number of Questions:</label>
+                    <input type="number" id="questionCount" name="questionCount" min="5" max="20" value="10" class="number-input">
+                    <span class="input-hint">(5-20 questions)</span>
+                </div>
+                
+                <div class="modal-buttons">
+                    <button type="button" onclick="closeWorksheetModal()" class="modal-button cancel-button">Cancel</button>
+                    <button type="submit" class="modal-button generate-button">Generate Worksheet</button>
+                </div>
+            </form>
+        </div>
     </div>
     
     <script src="config.js"></script>
+    <script src="logic.js"></script>
+    <script src="worksheet.js"></script>
     <script src="router.js"></script>
+    <script>
+        // Modal functions
+        function openWorksheetModal() {
+            const modal = document.getElementById('worksheetModal');
+            modal.classList.add('active');
+        }
+        
+        function closeWorksheetModal() {
+            const modal = document.getElementById('worksheetModal');
+            modal.classList.remove('active');
+            // Reset form
+            document.getElementById('worksheetForm').reset();
+        }
+        
+        // Close modal when clicking outside
+        document.getElementById('worksheetModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeWorksheetModal();
+            }
+        });
+        
+        // Handle form submission
+        document.getElementById('worksheetForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get selected exercise types
+            const checkboxes = document.querySelectorAll('input[name="exerciseType"]:checked');
+            const selectedTypes = Array.from(checkboxes).map(cb => cb.value);
+            
+            // Get question count
+            const questionCountInput = document.getElementById('questionCount');
+            const questionCount = parseInt(questionCountInput.value);
+            
+            // Validation
+            if (selectedTypes.length === 0) {
+                alert('Please select at least one exercise type.');
+                return;
+            }
+            
+            if (isNaN(questionCount) || questionCount < 5 || questionCount > 20) {
+                alert('Please enter a number between 5 and 20 for the question count.');
+                questionCountInput.focus();
+                return;
+            }
+            
+            try {
+                // Generate worksheet
+                const worksheetData = generateWorksheet(selectedTypes, questionCount);
+                
+                // Create and download PDF (worksheetData already contains exerciseTypes)
+                createPDF(worksheetData);
+                
+                // Close modal
+                closeWorksheetModal();
+            } catch (error) {
+                alert('Error generating worksheet: ' + error.message);
+            }
+        });
+    </script>
 </body>
 </html>
 

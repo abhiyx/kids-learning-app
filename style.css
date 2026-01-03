@@ -81,6 +81,201 @@ body {
     font-weight: 600;
 }
 
+.download-worksheet-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    padding: 30px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 3px solid #667eea;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    grid-column: 1 / -1;
+}
+
+.download-worksheet-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+    border-color: #764ba2;
+}
+
+.download-worksheet-card .exercise-icon {
+    color: white;
+}
+
+.download-worksheet-card .exercise-name {
+    color: white;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-container {
+    background: white;
+    border-radius: 25px;
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    border: 3px solid #e2e8f0;
+}
+
+.modal-title {
+    font-size: 2rem;
+    color: #5a67d8;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 600;
+}
+
+#worksheetForm {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.exercise-types-section,
+.question-count-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.section-label {
+    font-size: 1.2rem;
+    color: #2d3748;
+    font-weight: 600;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: #f7fafc;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid #e2e8f0;
+}
+
+.checkbox-label:hover {
+    background: #edf2f7;
+    border-color: #5a67d8;
+}
+
+.exercise-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #5a67d8;
+}
+
+.checkbox-label span {
+    font-size: 1.1rem;
+    color: #2d3748;
+    user-select: none;
+}
+
+.number-input {
+    padding: 15px;
+    font-size: 1.2rem;
+    border: 3px solid #cbd5e0;
+    border-radius: 10px;
+    text-align: center;
+    width: 100px;
+    margin: 0 auto;
+    transition: all 0.2s;
+}
+
+.number-input:focus {
+    outline: none;
+    border-color: #5a67d8;
+    box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.1);
+}
+
+.number-input:invalid {
+    border-color: #fc8181;
+}
+
+.input-hint {
+    font-size: 0.9rem;
+    color: #718096;
+    text-align: center;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.modal-button {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    min-width: 120px;
+}
+
+.cancel-button {
+    background: #edf2f7;
+    color: #4a5568;
+    border: 2px solid #cbd5e0;
+}
+
+.cancel-button:hover {
+    background: #e2e8f0;
+    border-color: #a0aec0;
+}
+
+.generate-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: 2px solid #667eea;
+}
+
+.generate-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+}
+
+.generate-button:active {
+    transform: translateY(0);
+}
+
 /* Exercise Page Styles */
 .exercise-container {
     max-width: 600px;
