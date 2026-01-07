@@ -37,6 +37,16 @@
                 <div class="exercise-icon">⬇️</div>
                 <div class="exercise-name">Smaller</div>
             </div>
+            
+            <div class="exercise-card" onclick="navigateToExercise('addition')">
+                <div class="exercise-icon">➕</div>
+                <div class="exercise-name">Addition</div>
+            </div>
+            
+            <div class="exercise-card" onclick="navigateToExercise('subtraction')">
+                <div class="exercise-icon">➖</div>
+                <div class="exercise-name">Subtraction</div>
+            </div>
         </div>
         
         <div class="download-worksheet-card" onclick="openWorksheetModal()">
@@ -72,6 +82,14 @@
                         <label class="checkbox-label">
                             <input type="radio" name="exerciseType" value="smaller" class="exercise-checkbox">
                             <span>⬇️ Smaller</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="radio" name="exerciseType" value="addition" class="exercise-checkbox">
+                            <span>➕ Addition</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="radio" name="exerciseType" value="subtraction" class="exercise-checkbox">
+                            <span>➖ Subtraction</span>
                         </label>
                     </div>
                 </div>

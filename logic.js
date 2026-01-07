@@ -215,8 +215,54 @@ function generateSmallerQuestion() {
 }
 
 /**
+ * Generate a question for "addition" exercise type
+ * Format: "3 + 5 = __" (find the sum)
+ */
+function generateAdditionQuestion() {
+    // Randomly choose num1 from 1 to MAX_SUM-1
+    // This ensures we can always find a valid num2
+    const num1 = Math.floor(Math.random() * (CONFIG.MAX_SUM - 1)) + 1;
+    // Choose num2 from 1 to (MAX_SUM - num1) to ensure sum ≤ MAX_SUM
+    const num2 = Math.floor(Math.random() * (CONFIG.MAX_SUM - num1)) + 1;
+    const correctAnswer = num1 + num2;
+    
+    const options = generateUniqueOptions(correctAnswer, CONFIG.OPTIONS_COUNT);
+    
+    return {
+        question: `${num1} + ${num2} = __`,
+        correctAnswer: correctAnswer,
+        options: options,
+        type: 'addition'
+    };
+}
+
+/**
+ * Generate a question for "subtraction" exercise type
+ * Format: "8 - 3 = __" (find the difference)
+ * Ensures num1 ≥ num2 (no negative results) and difference ≤ MAX_DIFFERENCE
+ */
+function generateSubtractionQuestion() {
+    // Randomly choose result (difference) from 0 to MAX_DIFFERENCE
+    const result = Math.floor(Math.random() * (CONFIG.MAX_DIFFERENCE + 1));
+    // Randomly choose num2 from 1 to MAX_DIFFERENCE
+    // This ensures we can calculate num1 = result + num2
+    const num2 = Math.floor(Math.random() * CONFIG.MAX_DIFFERENCE) + 1;
+    const num1 = result + num2;
+    
+    const correctAnswer = result;
+    const options = generateUniqueOptions(correctAnswer, CONFIG.OPTIONS_COUNT);
+    
+    return {
+        question: `${num1} - ${num2} = __`,
+        correctAnswer: correctAnswer,
+        options: options,
+        type: 'subtraction'
+    };
+}
+
+/**
  * Generate a question based on exercise type
- * @param {string} exerciseType - Type of exercise ('missing', 'before', 'after', 'greater', 'smaller')
+ * @param {string} exerciseType - Type of exercise ('missing', 'before', 'after', 'greater', 'smaller', 'addition', 'subtraction')
  * @returns {Object} Question object with question, correctAnswer, options, and type
  */
 function generateQuestion(exerciseType) {
@@ -231,6 +277,10 @@ function generateQuestion(exerciseType) {
             return generateGreaterQuestion();
         case 'smaller':
             return generateSmallerQuestion();
+        case 'addition':
+            return generateAdditionQuestion();
+        case 'subtraction':
+            return generateSubtractionQuestion();
         default:
             // Default to missing if type is invalid
             return generateMissingQuestion();

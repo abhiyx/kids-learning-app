@@ -83,6 +83,12 @@ function formatQuestionForWorksheet(question) {
         case 'smaller':
             // "10 ? 12" -> "10 _____ 12"
             return question.question.replace('?', '_____');
+        case 'addition':
+            // "3 + 5 = __" -> "3 + 5 = _____"
+            return question.question.replace('= __', '= _____');
+        case 'subtraction':
+            // "8 - 3 = __" -> "8 - 3 = _____"
+            return question.question.replace('= __', '= _____');
         default:
             return question.question;
     }
@@ -99,7 +105,9 @@ function getExerciseDisplayName(type) {
         'before': 'Before',
         'after': 'After',
         'greater': 'Greater',
-        'smaller': 'Smaller'
+        'smaller': 'Smaller',
+        'addition': 'Addition',
+        'subtraction': 'Subtraction'
     };
     return exerciseNames[type] || type;
 }
