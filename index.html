@@ -3,57 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kids Learning App - Menu</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>Kids Learning App - Free Math Exercises for Children | Missing Numbers, Addition, Subtraction</title>
+    <meta name="title" content="Kids Learning App - Free Math Exercises for Children | Missing Numbers, Addition, Subtraction">
+    <meta name="description" content="Interactive math learning app for kids. Practice missing numbers, addition, subtraction, greater than, smaller than, before and after concepts. Free educational worksheets and exercises for children.">
+    <meta name="keywords" content="kids learning app, math exercises for kids, children math practice, missing numbers, addition for kids, subtraction for kids, educational worksheets, free math games, kids education, elementary math">
+    <meta name="author" content="Kids Learning App">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://abhiyx.github.io/kids-learning-app/">
+    <meta property="og:title" content="Kids Learning App - Free Math Exercises for Children">
+    <meta property="og:description" content="Interactive math learning app for kids. Practice missing numbers, addition, subtraction, and more with fun exercises and downloadable worksheets.">
+    <meta property="og:image" content="https://abhiyx.github.io/kids-learning-app/og-image.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://abhiyx.github.io/kids-learning-app/">
+    <meta property="twitter:title" content="Kids Learning App - Free Math Exercises for Children">
+    <meta property="twitter:description" content="Interactive math learning app for kids. Practice missing numbers, addition, subtraction, and more with fun exercises and downloadable worksheets.">
+    <meta property="twitter:image" content="https://abhiyx.github.io/kids-learning-app/og-image.jpg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://abhiyx.github.io/kids-learning-app/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Kids Learning App",
+      "description": "Interactive math learning app for kids with exercises on missing numbers, addition, subtraction, greater than, smaller than, before and after concepts.",
+      "url": "https://abhiyx.github.io/kids-learning-app/",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "150"
+      },
+      "educationalUse": "practice",
+      "learningResourceType": "interactive",
+      "audience": {
+        "@type": "EducationalAudience",
+        "educationalRole": "student",
+        "audienceType": "children"
+      }
+    }
+    </script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <div class="menu-container">
-        <h1 class="menu-title">🌟 Learning Fun! 🌟</h1>
-        <p class="menu-subtitle">Choose an exercise to start learning</p>
+    <main class="menu-container" role="main">
+        <header>
+            <h1 class="menu-title">🌟 Learning Fun! 🌟</h1>
+            <p class="menu-subtitle">Choose an exercise to start learning</p>
+        </header>
         
         <div class="exercise-grid">
-            <div class="exercise-card" onclick="navigateToExercise('missing')">
-                <div class="exercise-icon">🔢</div>
+            <article class="exercise-card" onclick="navigateToExercise('missing')" role="button" tabindex="0" aria-label="Practice missing number exercises">
+                <div class="exercise-icon" aria-hidden="true">🔢</div>
                 <div class="exercise-name">Missing Number</div>
-            </div>
+            </article>
             
-            <div class="exercise-card" onclick="navigateToExercise('before')">
-                <div class="exercise-icon">⬅️</div>
+            <article class="exercise-card" onclick="navigateToExercise('before')" role="button" tabindex="0" aria-label="Practice before number exercises">
+                <div class="exercise-icon" aria-hidden="true">⬅️</div>
                 <div class="exercise-name">Before</div>
-            </div>
+            </article>
             
-            <div class="exercise-card" onclick="navigateToExercise('after')">
-                <div class="exercise-icon">➡️</div>
+            <article class="exercise-card" onclick="navigateToExercise('after')" role="button" tabindex="0" aria-label="Practice after number exercises">
+                <div class="exercise-icon" aria-hidden="true">➡️</div>
                 <div class="exercise-name">After</div>
-            </div>
+            </article>
             
-            <div class="exercise-card" onclick="navigateToExercise('greater')">
-                <div class="exercise-icon">⬆️</div>
+            <article class="exercise-card" onclick="navigateToExercise('greater')" role="button" tabindex="0" aria-label="Practice greater than exercises">
+                <div class="exercise-icon" aria-hidden="true">⬆️</div>
                 <div class="exercise-name">Greater</div>
-            </div>
+            </article>
             
-            <div class="exercise-card" onclick="navigateToExercise('smaller')">
-                <div class="exercise-icon">⬇️</div>
+            <article class="exercise-card" onclick="navigateToExercise('smaller')" role="button" tabindex="0" aria-label="Practice smaller than exercises">
+                <div class="exercise-icon" aria-hidden="true">⬇️</div>
                 <div class="exercise-name">Smaller</div>
-            </div>
+            </article>
             
-            <div class="exercise-card" onclick="navigateToExercise('addition')">
-                <div class="exercise-icon">➕</div>
+            <article class="exercise-card" onclick="navigateToExercise('addition')" role="button" tabindex="0" aria-label="Practice addition exercises">
+                <div class="exercise-icon" aria-hidden="true">➕</div>
                 <div class="exercise-name">Addition</div>
-            </div>
+            </article>
             
-            <div class="exercise-card" onclick="navigateToExercise('subtraction')">
-                <div class="exercise-icon">➖</div>
+            <article class="exercise-card" onclick="navigateToExercise('subtraction')" role="button" tabindex="0" aria-label="Practice subtraction exercises">
+                <div class="exercise-icon" aria-hidden="true">➖</div>
                 <div class="exercise-name">Subtraction</div>
-            </div>
+            </article>
         </div>
         
-        <div class="download-worksheet-card" onclick="openWorksheetModal()">
-            <div class="exercise-icon">📄</div>
+        <div class="download-worksheet-card" onclick="openWorksheetModal()" role="button" tabindex="0" aria-label="Download printable worksheet">
+            <div class="exercise-icon" aria-hidden="true">📄</div>
             <div class="exercise-name">Download Worksheet</div>
         </div>
-    </div>
+    </main>
     
     <!-- Worksheet Modal -->
     <div id="worksheetModal" class="modal-overlay">

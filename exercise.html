@@ -3,26 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kids Learning App - Exercise</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>Math Exercise - Kids Learning App | Practice Math Skills Online</title>
+    <meta name="title" content="Math Exercise - Kids Learning App | Practice Math Skills Online">
+    <meta name="description" content="Interactive math exercises for kids. Practice missing numbers, addition, subtraction, greater than, smaller than, before and after concepts with instant feedback.">
+    <meta name="keywords" content="math exercises for kids, interactive math practice, kids math games, educational exercises, math practice online">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://abhiyx.github.io/kids-learning-app/exercise.html">
+    <meta property="og:title" content="Math Exercise - Kids Learning App">
+    <meta property="og:description" content="Interactive math exercises for kids with instant feedback and fun learning experience.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://abhiyx.github.io/kids-learning-app/exercise.html">
+    <meta property="twitter:title" content="Math Exercise - Kids Learning App">
+    <meta property="twitter:description" content="Interactive math exercises for kids with instant feedback and fun learning experience.">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://abhiyx.github.io/kids-learning-app/exercise.html">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LearningResource",
+      "name": "Math Exercise - Kids Learning App",
+      "description": "Interactive math exercises for children to practice various mathematical concepts",
+      "educationalLevel": "Elementary",
+      "learningResourceType": "Interactive Exercise",
+      "interactivityType": "active",
+      "audience": {
+        "@type": "EducationalAudience",
+        "educationalRole": "student",
+        "audienceType": "children"
+      }
+    }
+    </script>
 </head>
 <body>
-    <div class="exercise-container">
-        <div class="exercise-header">
-            <button class="back-button" onclick="navigateToMenu()">← Back to Menu</button>
-            <h2 class="exercise-title" id="exerciseTitle">Exercise</h2>
-        </div>
+    <main class="exercise-container" role="main">
+        <header class="exercise-header">
+            <nav>
+                <button class="back-button" onclick="navigateToMenu()" aria-label="Go back to main menu">← Back to Menu</button>
+            </nav>
+            <h1 class="exercise-title" id="exerciseTitle">Exercise</h1>
+        </header>
         
-        <div class="question-display">
-            <div class="question-text" id="questionText">Loading question...</div>
-        </div>
+        <section class="question-display" aria-live="polite">
+            <div class="question-text" id="questionText" role="status">Loading question...</div>
+        </section>
         
-        <div class="options-container" id="optionsContainer">
+        <section class="options-container" id="optionsContainer" role="group" aria-label="Answer options">
             <!-- Options will be generated here -->
-        </div>
+        </section>
         
-        <div class="feedback-message" id="feedbackMessage"></div>
-    </div>
+        <div class="feedback-message" id="feedbackMessage" role="status" aria-live="polite"></div>
+    </main>
     
     <script src="config.js"></script>
     <script src="router.js"></script>
