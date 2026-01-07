@@ -51,26 +51,26 @@
             <h2 class="modal-title">Create Your Worksheet</h2>
             <form id="worksheetForm">
                 <div class="exercise-types-section">
-                    <label class="section-label">Select Exercise Types:</label>
+                    <label class="section-label">Select Exercise Type:</label>
                     <div class="checkbox-group">
                         <label class="checkbox-label">
-                            <input type="checkbox" name="exerciseType" value="missing" class="exercise-checkbox">
+                            <input type="radio" name="exerciseType" value="missing" class="exercise-checkbox">
                             <span>🔢 Missing Number</span>
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="exerciseType" value="before" class="exercise-checkbox">
+                            <input type="radio" name="exerciseType" value="before" class="exercise-checkbox">
                             <span>⬅️ Before</span>
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="exerciseType" value="after" class="exercise-checkbox">
+                            <input type="radio" name="exerciseType" value="after" class="exercise-checkbox">
                             <span>➡️ After</span>
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="exerciseType" value="greater" class="exercise-checkbox">
+                            <input type="radio" name="exerciseType" value="greater" class="exercise-checkbox">
                             <span>⬆️ Greater</span>
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="exerciseType" value="smaller" class="exercise-checkbox">
+                            <input type="radio" name="exerciseType" value="smaller" class="exercise-checkbox">
                             <span>⬇️ Smaller</span>
                         </label>
                     </div>
@@ -119,19 +119,21 @@
         document.getElementById('worksheetForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Get selected exercise types
-            const checkboxes = document.querySelectorAll('input[name="exerciseType"]:checked');
-            const selectedTypes = Array.from(checkboxes).map(cb => cb.value);
+            // Get selected exercise type
+            const selectedRadio = document.querySelector('input[name="exerciseType"]:checked');
             
             // Get question count
             const questionCountInput = document.getElementById('questionCount');
             const questionCount = parseInt(questionCountInput.value);
             
             // Validation
-            if (selectedTypes.length === 0) {
-                alert('Please select at least one exercise type.');
+            if (!selectedRadio) {
+                alert('Please select an exercise type.');
                 return;
             }
+            
+            const selectedType = selectedRadio.value;
+            const selectedTypes = [selectedType];
             
             if (isNaN(questionCount) || questionCount < 5 || questionCount > 20) {
                 alert('Please enter a number between 5 and 20 for the question count.');

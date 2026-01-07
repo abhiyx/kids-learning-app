@@ -1,14 +1,14 @@
 // Worksheet generation and PDF creation module
 
 /**
- * Generate questions for selected exercise types and distribute them evenly
- * @param {Array<string>} exerciseTypes - Array of exercise type names
+ * Generate questions for selected exercise type
+ * @param {Array<string>} exerciseTypes - Array with single exercise type name
  * @param {number} questionCount - Total number of questions to generate
  * @returns {Object} Object containing questions array and answers array
  */
 function generateWorksheet(exerciseTypes, questionCount) {
     if (!exerciseTypes || exerciseTypes.length === 0) {
-        throw new Error('At least one exercise type must be selected');
+        throw new Error('An exercise type must be selected');
     }
     
     if (questionCount < 5 || questionCount > 20) {
@@ -17,53 +17,42 @@ function generateWorksheet(exerciseTypes, questionCount) {
     
     const questions = [];
     const answers = [];
-    const questionsPerType = Math.floor(questionCount / exerciseTypes.length);
-    const remainder = questionCount % exerciseTypes.length;
+    const exerciseType = exerciseTypes[0]; // Single exercise type
     
     // Track generated questions to avoid duplicates
     const generatedQuestions = new Set();
     
-    // Distribute questions evenly across types
-    exerciseTypes.forEach((type, index) => {
-        let countForThisType = questionsPerType;
+    // Generate all questions for the selected type
+    for (let i = 0; i < questionCount; i++) {
+        let question;
+        let attempts = 0;
+        let questionKey;
         
-        // Distribute remainder randomly
-        if (index < remainder) {
-            countForThisType += 1;
-        }
+        // Try to generate unique questions (up to 50 attempts)
+        do {
+            question = generateQuestion(exerciseType);
+            questionKey = `${exerciseType}-${question.question}-${question.correctAnswer}`;
+            attempts++;
+        } while (generatedQuestions.has(questionKey) && attempts < 50);
         
-        // Generate questions for this type
-        for (let i = 0; i < countForThisType; i++) {
-            let question;
-            let attempts = 0;
-            let questionKey;
-            
-            // Try to generate unique questions (up to 50 attempts)
-            do {
-                question = generateQuestion(type);
-                questionKey = `${type}-${question.question}-${question.correctAnswer}`;
-                attempts++;
-            } while (generatedQuestions.has(questionKey) && attempts < 50);
-            
-            generatedQuestions.add(questionKey);
-            
-            // Format question for worksheet (remove options, show blank)
-            const worksheetQuestion = formatQuestionForWorksheet(question);
-            
-            questions.push({
-                number: questions.length + 1,
-                text: worksheetQuestion,
-                type: type
-            });
-            
-            answers.push({
-                number: answers.length + 1,
-                question: worksheetQuestion,
-                answer: question.correctAnswer,
-                type: type
-            });
-        }
-    });
+        generatedQuestions.add(questionKey);
+        
+        // Format question for worksheet (remove options, show blank)
+        const worksheetQuestion = formatQuestionForWorksheet(question);
+        
+        questions.push({
+            number: questions.length + 1,
+            text: worksheetQuestion,
+            type: exerciseType
+        });
+        
+        answers.push({
+            number: answers.length + 1,
+            question: worksheetQuestion,
+            answer: question.correctAnswer,
+            type: exerciseType
+        });
+    }
     
     return {
         questions: questions,
@@ -150,15 +139,14 @@ function createPDF(worksheetData) {
     doc.setTextColor(45, 55, 72); // #2d3748
     doc.setFont('helvetica', 'bold');
     
-    // Get exercise type names
-    const exerciseTypeNames = worksheetData.exerciseTypes.map(type => getExerciseDisplayName(type));
-    const exerciseTypesText = exerciseTypeNames.join(', ');
+    // Get exercise type name
+    const exerciseTypeName = getExerciseDisplayName(worksheetData.exerciseTypes[0]);
     
     // Get number range from CONFIG
     const numberRange = `Numbers ${CONFIG.NUMBER_RANGE_MIN}-${CONFIG.NUMBER_RANGE_MAX}`;
     
-    // Display exercise types
-    doc.text(`Exercise Types: ${exerciseTypesText}`, pageWidth / 2, yPos, { align: 'center' });
+    // Display exercise type
+    doc.text(`Exercise Type: ${exerciseTypeName}`, pageWidth / 2, yPos, { align: 'center' });
     yPos += 6;
     
     // Display number range
