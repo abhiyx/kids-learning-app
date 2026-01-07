@@ -112,7 +112,25 @@
     <script src="logic.js"></script>
     <script src="worksheet.js"></script>
     <script src="router.js"></script>
+    <script type="module" src="analytics.js"></script>
     <script>
+        // Initialize analytics when page loads
+        window.addEventListener('DOMContentLoaded', async () => {
+            // Wait for analytics module to load if needed
+            if (typeof initAnalytics === 'function') {
+                await initAnalytics();
+                trackPageView('Menu');
+            } else {
+                // Retry after a short delay if module hasn't loaded yet
+                setTimeout(async () => {
+                    if (typeof initAnalytics === 'function') {
+                        await initAnalytics();
+                        trackPageView('Menu');
+                    }
+                }, 100);
+            }
+        });
+        
         // Modal functions
         function openWorksheetModal() {
             const modal = document.getElementById('worksheetModal');
@@ -162,6 +180,9 @@
             try {
                 // Generate worksheet
                 const worksheetData = generateWorksheet(selectedTypes, questionCount);
+                
+                // Track worksheet download
+                trackWorksheetDownload(selectedType, questionCount);
                 
                 // Create and download PDF (worksheetData already contains exerciseTypes)
                 createPDF(worksheetData);

@@ -27,6 +27,7 @@
     <script src="config.js"></script>
     <script src="router.js"></script>
     <script src="logic.js"></script>
+    <script type="module" src="analytics.js"></script>
     <script>
         // Sound utility functions using Web Audio API
         let audioContext = null;
@@ -117,13 +118,27 @@
         /**
          * Initialize the exercise page
          */
-        function initExercise() {
+        async function initExercise() {
             const exerciseType = getCurrentExerciseType();
             
             if (!exerciseType) {
                 // If no type specified, redirect to menu
                 navigateToMenu();
                 return;
+            }
+            
+            // Initialize analytics and track page view
+            if (typeof initAnalytics === 'function') {
+                await initAnalytics();
+                trackPageView(`Exercise - ${exerciseType}`);
+            } else {
+                // Retry after a short delay if module hasn't loaded yet
+                setTimeout(async () => {
+                    if (typeof initAnalytics === 'function') {
+                        await initAnalytics();
+                        trackPageView(`Exercise - ${exerciseType}`);
+                    }
+                }, 100);
             }
             
             // Set exercise title
@@ -189,6 +204,12 @@
             
             // Check if answer is correct (handle both numbers and signs)
             const isCorrect = String(selectedAnswer) === String(currentQuestion.correctAnswer);
+            
+            // Track answer submission
+            const exerciseType = getCurrentExerciseType();
+            if (typeof trackAnswer === 'function') {
+                trackAnswer(exerciseType, isCorrect, selectedAnswer);
+            }
             
             if (isCorrect) {
                 // Play success sound
