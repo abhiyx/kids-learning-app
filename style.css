@@ -386,6 +386,14 @@ body {
     opacity: 0.7;
 }
 
+.option-button:focus {
+    outline: none;
+}
+
+.option-button:focus-visible {
+    outline: none;
+}
+
 .feedback-message {
     margin-top: 25px;
     font-size: 1.8rem;

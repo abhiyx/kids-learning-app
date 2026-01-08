@@ -230,6 +230,11 @@
                 button.onclick = () => handleAnswer(option);
                 container.appendChild(button);
             });
+            
+            // Remove focus from any button to prevent blue highlight on next question
+            if (document.activeElement && document.activeElement.classList.contains('option-button')) {
+                document.activeElement.blur();
+            }
         }
         
         /**
